@@ -18,7 +18,7 @@ class Users extends Component {
     fetchUsers = async () => {
         var config = {
             method: 'get',
-            url: 'http://emphasoft-test-assignment.herokuapp.com/api/v1/users/',
+            url: 'https://emphasoft-test-assignment.herokuapp.com/api/v1/users/',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `token ${Storage.getToken()}`

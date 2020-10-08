@@ -39,7 +39,7 @@ const Login = ({history}) => {
                 body: JSON.stringify({ "username": trimUsername, "password": trimPassword }),
             };
 
-            fetch("http://emphasoft-test-assignment.herokuapp.com/api-token-auth/", requestOptions)
+            fetch("https://emphasoft-test-assignment.herokuapp.com/api-token-auth/", requestOptions)
                 .then(response => response.text())
                 .then(result => {
                     const {token} = JSON.parse(result);
