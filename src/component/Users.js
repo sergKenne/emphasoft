@@ -34,7 +34,7 @@ class Users extends Component {
                     users: [...prevState.users, ...users],
                     filtedUsers: [...prevState.users, ...users],
 
-                }), () => console.log("users after render:", this.state.users))
+                }), () => console.log("users after setState:", this.state.users))
             }
         }catch(error) {
             console.log(error);

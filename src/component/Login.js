@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import Storage from '../Storage';
 
 const Login = ({history}) => {
+
     const [user, setUser] = useState({
         username: "", 
         password: "",
@@ -13,7 +14,7 @@ const Login = ({history}) => {
         passwordWarning: false,
     });
 
-    
+    //Reset Error Form
     const resetErrorForm = () => {
         setTimeout(() => setUser({
             ...user,
@@ -23,13 +24,76 @@ const Login = ({history}) => {
             usernameWarning: false,
             passwordWarning: false,
         }), 2000);
-    } 
+    }
 
-    const formValidite =  (username, password) => {
+    //Username Validation
+    const validateUsername = (message) => {
+        setUser({ ...user, errorUsername: message, usernameWarning: true });
+        resetErrorForm();
+    }
+
+    //Password Validation
+    const validatePassword = (message) => {
+        setUser({ ...user, errorPassword: message, passwordWarning: true });
+        resetErrorForm();
+    }
+
+    //Username And Password Validation 
+    const PassAndUserValidation = (userMess, passMess) => {
+        setUser({
+            ...user,
+            errorUsername: userMess,
+            errorPassword: passMess,
+            usernameWarning: true,
+            passwordWarning: true,
+        });
+        resetErrorForm();
+    }
+    
+    //Validation And Authentication
+    const validateAndAuthentication =  (username, password) => {
+
         const trimUsername = trim(username);
         const trimPassword = trim(password);
 
+        const regexUsername = /^[\w.@+-]+$/;
+        const regexPassword = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
         if(trimUsername && trimPassword) {
+
+            if(trimUsername.length > 151) {
+
+                validateUsername("Required maximum  150 characters");
+                return;
+            }
+
+            if(!regexUsername.test(trimUsername)) {
+
+                validateUsername("This is not a valid user name");
+                return;
+            }
+
+            if (trimPassword.length > 129) {
+
+                validatePassword("Required maximun 128 characters ");
+                return;
+            }
+
+            if (!regexPassword.test(trimPassword)) {
+
+                validatePassword("This is not a valid password");
+                return;
+            }
+
+            if(!regexUsername.test(trimUsername) && !regexPassword.test(trimPassword)) {
+
+                PassAndUserValidation(
+                    "This is not a valid user name",
+                    "This is not a valid Password"
+                );
+                return;
+            }
+
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
@@ -52,7 +116,7 @@ const Login = ({history}) => {
                     }
                 })
                 .catch(Error => {
-                    console.log("ErrorCatch:", Error.message);
+                    //console.log("ErrorCatch:", Error.message);
                     setUser({
                         ...user,
                         errorToken: `${Error.message} username or password is not correct`,
@@ -60,29 +124,19 @@ const Login = ({history}) => {
                     resetErrorForm();
                 });
            
-        } else if (trim(username) === "" && trim(password) !== "" ) {
-            setUser({
-                ...user, 
-                errorUsername:"please fill username",
-                usernameWarning: true,
-                });
-            resetErrorForm(); 
-        } else if (trim(username) !== "" && trim(password) === "") {
-            setUser({
-                ...user,
-                errorPassword: "please fill password",
-                passwordWarning: true,
-            });
-            resetErrorForm();
+        } else if (trimUsername === "" && trimPassword !== "" ) {
+
+            validateUsername("Username Field cannot be left empty");
+            
+        } else if (trimUsername !== "" && trimPassword === "") {
+
+            validatePassword("Password Field cannot be left empty");
+            
         } else {
-            setUser({
-                ...user,
-                errorUsername: "please fill username",
-                errorPassword: "please fill password",
-                usernameWarning: true,
-                passwordWarning: true,
-            });
-            resetErrorForm();
+            PassAndUserValidation(
+                "Username Field cannot be left empty", 
+                "Password Field cannot be left empty"
+            )
         }
     }
 
@@ -96,7 +150,7 @@ const Login = ({history}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const {username, password} = user;
-        formValidite(username, password);
+        validateAndAuthentication(username, password);
     }
 
     const { usernameWarning, passwordWarning} = user
