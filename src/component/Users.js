@@ -11,7 +11,7 @@ class Users extends Component {
             users: [],
             searchUser: "",
             loading: true,
-            filtedUsers: []
+            filtedUsers: [],
         }  
     }
 
@@ -41,8 +41,27 @@ class Users extends Component {
         }
     }
 
-    componentDidMount() {
-        this.fetchUsers();  
+    sortBy = (e) => {
+
+        if(e.target.value === "username") {
+            this.setState(prevState => ({
+                ...prevState,
+                filtedUsers: this.state.filtedUsers.sort((a, b) => {
+                    var usernameA = a.username.toLowerCase();
+                    var usernameB = b.username.toLowerCase();
+                    if (usernameA < usernameB) 
+                    return -1;
+                    if (usernameA > usernameB)
+                    return 1;
+                    return 0; 
+                })
+            }))
+        } else {
+            this.setState(prevState => ({
+                ...prevState,
+                filtedUsers: this.state.filtedUsers.sort((a,b) => a.id - b.id)
+            }))
+        }
     }
 
     filterByName = (e) => {
@@ -50,12 +69,17 @@ class Users extends Component {
             this.setState({
                 ...this.state,
                 filtedUsers: this.state.users.filter(el => {
-                    return el.username.toLowerCase().includes(this.state.searchUser.toLowerCase())
+                    return el.username.toLowerCase().includes(this.state.searchUser.toLowerCase()) || 
+                    el.id.toString().includes(this.state.searchUser.toLowerCase());
                     
                 })
             })
 
         });
+    }
+
+     componentDidMount() {
+        this.fetchUsers();  
     }
 
     render() {
@@ -69,14 +93,31 @@ class Users extends Component {
             <div className="users">
                 <div className="users-header">
                     <div className="container">
-                        <h1 className="text-center">Users</h1>
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            placeholder="Search names ..." 
-                            onChange={this.filterByName}
-                            value={searchUser}
-                        />
+                        <h1 className="">Users</h1>
+                        <div className="form-row">
+                            <div class="col-md-9">
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    placeholder="Search names ..." 
+                                    onChange={this.filterByName}
+                                    value={searchUser}
+                                />
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-inline">
+                                    <label class="my-1 mr-2 ml-auto" for="sort">Sort By</label>
+                                    <select 
+                                        class="custom-select  mr-sm-2" 
+                                        id="sort" 
+                                        onChange={this.sortBy}>
+                                        <option value="id">Id</option>
+                                        <option value="username">Username</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>    
                 </div>
                 <div className="container">

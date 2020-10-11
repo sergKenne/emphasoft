@@ -8,6 +8,7 @@ const User = ({user}) => {
                     <i className="fas fa-user-circle"></i>
                 </div>
                 <div className="card-body">
+                    <h6>Id:{"  "} {user.id}</h6>
                     <h5 className="card-title">{user.username}</h5>
                 </div>
             </div>
