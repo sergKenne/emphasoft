@@ -149,6 +149,18 @@ input:-webkit-autofill:active {
   overflow: hidden;
 }
 
+@media screen and  (max-width:935px) {
+  .users-list {
+    padding-top: 220px;
+  }
+}
+
+@media screen and  (max-width:576px) {
+  .users-list {
+    padding-top: 246px;
+  }
+}
+
 /* card */
 .card .fas {
   font-size: 3rem;
@@ -185,8 +197,6 @@ input:-webkit-autofill:active {
 }
 
 .error-page {
-  /* margin-top: 70px;
-  text-align: center; */
   height: 100vh;
   display: flex;
   justify-content: center;

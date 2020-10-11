@@ -94,19 +94,19 @@ class Users extends Component {
                 <div className="users-header">
                     <div className="container">
                         <h1 className="">Users</h1>
-                        <div className="form-row">
-                            <div class="col-md-9">
+                        <div className="row form-row">
+                            <div class=" col-md-12 col-lg-9">
                                 <input 
                                     type="text" 
                                     className="form-control" 
-                                    placeholder="Search names ..." 
+                                    placeholder="Search by username or by id ..." 
                                     onChange={this.filterByName}
                                     value={searchUser}
                                 />
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-inline">
-                                    <label class="my-1 mr-2 ml-auto" for="sort">Sort By</label>
+                            <div class="col-md-12 col-lg-3">
+                                <div class="form-inline   mt-sm-2 mt-md-2 mt-lg-0">
+                                    <label class="my-1 mr-2 ml-lg-auto" for="sort">Sort By</label>
                                     <select 
                                         class="custom-select  mr-sm-2" 
                                         id="sort" 
